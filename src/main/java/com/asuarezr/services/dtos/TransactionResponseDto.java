@@ -1,9 +1,11 @@
 package com.asuarezr.services.dtos;
 
-import java.math.BigDecimal;
+import org.bson.types.ObjectId;
+
 import java.sql.Timestamp;
 
-public record TransactionDto(
+public record TransactionResponseDto(
+        ObjectId id,
         String transactionId,
         Timestamp timestamp,
         Long deviceNumber,

@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 
-@MongoEntity(collection = "transaction")
+@MongoEntity(collection = "transactions")
 public class TransactionEntity {
   public ObjectId id;
   public String transactionId;
@@ -16,9 +16,9 @@ public class TransactionEntity {
   public Long deviceNumber;
   public Long userId;
   public GeoPosition geoPosition;
-  public BigDecimal amount;
+  public Double amount;
 
-  public TransactionEntity(ObjectId id, String transactionId, Timestamp timestamp, Long deviceNumber, Long userId, GeoPosition geoPosition, BigDecimal amount) {
+  public TransactionEntity(ObjectId id, String transactionId, Timestamp timestamp, Long deviceNumber, Long userId, GeoPosition geoPosition, Double amount) {
     this.id = id;
     this.transactionId = transactionId;
     this.timestamp = timestamp;
@@ -52,7 +52,7 @@ public class TransactionEntity {
     return geoPosition;
   }
 
-  public BigDecimal getAmount() {
+  public Double getAmount() {
     return amount;
   }
 }

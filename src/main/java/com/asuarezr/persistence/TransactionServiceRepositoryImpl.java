@@ -3,6 +3,8 @@ package com.asuarezr.persistence;
 import com.asuarezr.persistence.mapper.TransactionMapper;
 import com.asuarezr.services.TransactionServiceRepository;
 import com.asuarezr.services.dtos.TransactionDto;
+import com.asuarezr.services.dtos.TransactionResponseDto;
+import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
@@ -19,8 +21,9 @@ public class TransactionServiceRepositoryImpl implements TransactionServiceRepos
   }
 
   @Override
-  public void save(TransactionDto transactionDto) {
+  public Uni<TransactionResponseDto> save(TransactionDto transactionDto) {
      TransactionEntity transactionEntity = this.transactionMapper.toEntity(transactionDto);
-     this.transactionRepository.persist(transactionEntity);
+     return this.transactionRepository.persist(transactionEntity)
+             .onItem().transform(transactionMapper::toDto);
   }
 }

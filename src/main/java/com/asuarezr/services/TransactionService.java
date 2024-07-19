@@ -1,6 +1,8 @@
 package com.asuarezr.services;
 
 import com.asuarezr.services.dtos.TransactionDto;
+import com.asuarezr.services.dtos.TransactionResponseDto;
+import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
@@ -14,8 +16,7 @@ public class TransactionService {
     this.transactionServiceRepository = transactionServiceRepository;
   }
 
-  public TransactionDto process(TransactionDto transaction){
-      this.transactionServiceRepository.save(transaction);
-      return transaction;
+  public Uni<TransactionResponseDto> process(TransactionDto transaction){
+      return this.transactionServiceRepository.save(transaction);
   }
 }
