@@ -21,9 +21,9 @@ public class TransactionController {
   }
 
   @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    public Uni<TransactionResponseDto> processing(TransactionDto transaction){
+  @Produces(MediaType.APPLICATION_JSON)
+  public Uni<TransactionResponseDto> processing(TransactionDto transaction){
       return transactionService.process(transaction);
-    }
+  }
 
 }

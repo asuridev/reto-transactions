@@ -4,7 +4,6 @@ import com.asuarezr.services.dtos.GeoPosition;
 import io.quarkus.mongodb.panache.common.MongoEntity;
 import org.bson.types.ObjectId;
 
-import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 
