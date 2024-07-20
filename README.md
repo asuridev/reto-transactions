@@ -21,7 +21,7 @@ Se utilizó la libreria de hibernate-validator para garantizar que no ingresen d
 En caso que los datos de entrada no pasen las reglas de validación el servidor cancelará la solicitud y responderá con un status **400**, Bad-Request.
 
 ### Conexión Con la base de datos
-Para la capa de persistencia se utilizó el patrón repository sobre el ORM de Panache Reactive
+Para la capa de persistencia se utilizó el patrón repository sobre el ODM de Panache Reactive
 para controlar la base de datos de Mongo-DB.
 
 La interfaz Reactiva de Panache permite escribir pipeline reactivos mediante la libreria de mutiny, lo que incrementa de 
@@ -32,8 +32,8 @@ Permitiendo de esta manera poder antender un mayor número de solicitudes.
 !["pipeline"](/assets/pipeline-panache.png)
 
 ### Broker de mensajeria
-Se Utilizó el broker apache kafka, dado que tiene una muy buena integración con Quarkus, y por defecto implementa una 
-mensajería reactiva.
+Se utilizó el broker apache kafka, https://kafka.apache.org/ dado que tiene una muy buena integración con Quarkus,
+y por defecto implementa una mensajería reactiva https://smallrye.io/smallrye-reactive-messaging/latest/.
 El servidor registra sobre el topic **transaction-out** cada una de las transacciones recibidas a través de su endpoint
 luego de ser persistida en la base de datos.
  
@@ -89,12 +89,14 @@ Mediante una solicitud POST con los campos requeridos registrará la transacció
 }
 ```
 
+!["docker-desktop"](/assets/postman.png)
+
 > **_NOTA:_**  Ver la documentación publicada en el siguinte enlace: https://documenter.getpostman.com/view/19057359/2sA3kUGNFj
 
 ### Consulta de la Base de datos.
 Luego de ingresar varios registros de forma exitosa a traves del endpoint, se puede realizar la conexión a la base de datos para verificar la persistencia de los mismos.
 
-El cluster de docker-compose expone el puerto **27017** para permitir la conexión, mediante un cliente gráfico (MongoDB Compass).
+El cluster de docker-compose expone el puerto **27017** para permitir la conexión mediante un cliente gráfico (MongoDB Compass).
 
 URL de conexión a la base de datos:
 
@@ -121,12 +123,12 @@ Jmeter es una aplicación open source muy utilizada por la comunidad para testea
 
 Se configuró la herraminta con 10.000 Threads(usuarios) en un lapso de 60 segundos.
 
-!["kafka-ui"](/assets/test2.png)
+!["jmeter-config"](/assets/test2.png)
 
 Dando como resultado una prueba 100% exitosa, donde  todas las solicitudes fueron atendidas de forma satisfactoria por el sistema.
 
 Demostrando el consumo eficiente de los recursos de parte del servidor.
 
-!["kafka-ui"](/assets/test1.png)
+!["jmeter-resultado"](/assets/test1.png)
 
 > **_NOTA:_** En el repositorio se encuentra el archivo **test.jmx** con las configuraciones realizadas en Jmeter para la prueba, con el objetivo de poder replicarla.
