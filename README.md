@@ -1,12 +1,45 @@
-# transaction
+# Prueba Técnica: Sistema de Procesamiento de Transacciones
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+Para el desarrollo de la prueba se optó por utilizar el framework Quarkus https://quarkus.io/ por todas las ventajas que ofrece para el desarrollo basado en contenedores.
 
-If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
+!["arquitectura"](/assets/arquitectura.svg)
 
-## Running the application in dev mode
 
-You can run your application in dev mode that enables live coding using:
+## Desarrollo de la API-REST
+Para el desarrollo de la API-REST se utilizó una arquitectura de tres capas:
+- controller
+- persistence
+- services
+
+Además se implementó el patrón data-mapper con la finalidad de aislar la capa de servicio de cualquier detalle de implementación en la capas adyacentes.
+
+El patrón data-mapper usa el patrón DTO para pasar los datos entre cada una de las capas.
+
+### Validacion de los datos
+Se utilizó la libreria de hibernate-validator para garantizar que no ingresen datos nulos al sistema.
+En caso que los datos de entrada no pasen las reglas de validacion el servidor cancelará la solicitud y responderá con un status **400**, Bad-Request.
+
+### Conexión Con la base de datos
+Para la capa de persistencia se utilizó el patrón repository, sobre el ORM de Panache Reactive
+para controlar la base de datos de Mongo-DB.
+
+La interfaz Reactiva de Panache permite escribir pipeline reactivos mediante la libreria de mutiny, lo que incrementa de 
+forma considerable la eficiencia del servidor en el consumo de recursos.
+permitiendo de esta manera poder antender un mayor número de solicitudes.
+
+!["pipeline"](/assets/pipeline-panache.png)
+
+### Broker de mensajeria
+Se Utilizó el broker de apache kafka, dado que tiene una muy buena integración con Quarkus, y por defecto implementa una 
+mensajería reactiva.
+El servidor registra sobre el topic **transaction-out** cada una de las transacciones recibidas a través de su endpoint
+luego de ser persistida en la base de datos.
+ 
+### 
+
+
+
+
 ```shell script
 ./mvnw compile quarkus:dev
 ```
