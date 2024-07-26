@@ -116,6 +116,43 @@ URL del servicio: http://localhost/ui/clusters/sofka/all-topics/transaction-out
 
 > **_NOTA:_**  Ingresar al tab messages para visluazar en detalle cada uno de los mensajes registrados en el broker.
 
+### Obteniendo el total del monto por dia.
+Para esta tarea se creó un endpoint mediante el metodo *GET*. Pasando la fecha mediante un queryParams, el sistema
+retornará un documento con el total ´del monto para esa fecha.
+
+```
+localhost:4000/api/v1/transaction?date=2021-03-24
+```
+!["kafka-ui"](/assets/reporte.png)
+
+El repository implementa un _Aggregation Pipeline_ que mediante una 
+primera etapa en el que se filtran los registros por fechas y un segunda etapa en la que se agrupan y se suman los montos utilizando funciones del motor de base de datos.
+```
+[
+  {
+    $match: {
+      timestamp: {
+        $gte: ISODate(start_date),
+        $lt: ISODate(end_date)
+      }
+    }
+  },
+  {
+    $group: {
+      _id: {
+        day: { $dayOfYear: "$timestamp" },
+        year: { $year: "$timestamp" }
+      },
+      totalAmount: { $sum: "$amount" },
+      count: { $sum: 1 }
+    }
+  }
+]
+```
+Este _Aggregation Pipeline_ escrito en java mediente el ODM panache se veria de la siguiente manera.
+
+!["aggregation"](/assets/aggregation.png)
+
 ## Prueba de Rendimiento
 Para probar el rendimiento del sistema se utilizo la herramienta apache jMeter https://jmeter.apache.org/ .
 
